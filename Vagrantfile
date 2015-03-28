@@ -17,6 +17,10 @@ Vagrant.configure(2) do |config|
 
   config.vm.network "public_network", ip: "172.16.16.222", bridge: "eth0"
 
+  config.vm.provision "shell", path: "provision.sh" 
+
+  config.vm.network "forwarded_port", guest: 80, host: 7777
+
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
