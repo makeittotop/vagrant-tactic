@@ -88,7 +88,15 @@ stat /var/www/html/index.html &> /dev/null || echo '<META http-equiv="refresh" c
 
 # Restart apache service just in case
 service httpd restart
-# Start tactic in DEV mode 
-su apache -s /bin/bash -c "python /home/apache/tactic/src/bin/startup_dev.py &"
 
+# Start tactic in DEV mode 
+#su apache -s /bin/bash -c "python /home/apache/tactic/src/bin/startup_dev.py &"
+
+# Start TACTIC as a service
+service tactic status &> /dev/null || {
+  cp /home/apache/tactic/src/install/service/tactic /etc/init.d/tactic
+  chmod 755 /etc/init.d/tactic
+  /sbin/chkconfig tactic on
+  /etc/init.d/tactic start
+}
 
