@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
+# Install epel repo
+rpm -ivh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+
 yum -y update
+
+# Install guest additions
+# On host os, vagrant plugin install vagrant-vbguest
+yum -y install gcc kernel-devel make
 
 # Install apache httpd
 rpm -qa | grep httpd &> /dev/null || {
@@ -26,4 +33,6 @@ service postgresql-9.4 status &> /dev/null || {
   chkconfig postgresql-9.4 on;
 }
 
+# Install python-devel 
+yum -y install gcc zlib-devel libxslt-devel libxml2-devel python-devel python-pip.noarch
 
