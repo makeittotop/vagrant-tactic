@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # Install epel repo
-rpm -ivh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+rpm -qa | grep epel &> /dev/null || { 
+  rpm -ivh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm;
+}
 
 yum -y update
 
@@ -36,3 +38,21 @@ service postgresql-9.4 status &> /dev/null || {
 # Install python-devel 
 yum -y install gcc zlib-devel libxslt-devel libxml2-devel python-devel python-pip.noarch
 
+# Install python modules
+python -c "import lxml" &> /dev/null || {
+  pip install lxml  # PIL pycrypto psycopg2 
+}
+
+python -c "import PIL" &> /dev/null || {
+  pip install PIL  # PIL pycrypto psycopg2
+}
+
+python -c "import pycrypto" &> /dev/null || {
+  pip install pycrypto  # PIL pycrypto psycopg2 
+}
+
+python -c "import psycopg2" &> /dev/null || {
+  export PATH="/usr/pgsql-9.4/bin/:$PATH";
+  yum install -y libpqxx-devel.x86_64;
+  pip install psycopg2  # PIL pycrypto psycopg2
+}
